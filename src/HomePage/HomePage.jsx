@@ -36,9 +36,11 @@ class HomePage extends React.Component {
 						<Nav.Link>
 							<Link to="/">Home</Link>
 						</Nav.Link>
-						<Nav.Link>
-							<Link to="/Audit">Auditor</Link>
-						</Nav.Link>
+						{user.role === "Auditor" && (
+							<Nav.Link>
+								<Link to="/Audit">Auditor</Link>
+							</Nav.Link>
+						)}
 						<Nav.Link>
 							<Link to="/login">Logout</Link>
 						</Nav.Link>

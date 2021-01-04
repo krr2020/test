@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Auditpage } from "../Audit";
 import { history } from "../_helpers";
@@ -20,7 +20,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { alert } = this.props;
+		const { alert, authentication } = this.props;
 		return (
 			<div className="container">
 				{alert.message && (
@@ -31,7 +31,11 @@ class App extends React.Component {
 						<PrivateRoute exact path="/" component={HomePage} />
 						<Route path="/login" component={LoginPage} />
 						<Route path="/register" component={RegisterPage} />
-						<Route path="/Audit" component={Auditpage} />
+						{authentication.user && authentication.user.role === "Auditor" ? (
+							<Route exact path="/Audit" component={Auditpage} />
+						) : (
+							<Redirect to="/" />
+						)}
 					</div>
 				</Router>
 			</div>
@@ -40,8 +44,8 @@ class App extends React.Component {
 }
 
 function mapState(state) {
-	const { alert } = state;
-	return { alert };
+	const { alert, authentication } = state;
+	return { alert, authentication };
 }
 
 const actionCreators = {
